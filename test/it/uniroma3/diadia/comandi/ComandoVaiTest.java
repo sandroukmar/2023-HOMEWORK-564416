@@ -2,7 +2,10 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
+import it.uniroma3.diadia.IOSimulator;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,34 +17,53 @@ class ComandoVaiTest {
 	private IO io;
 	private Partita partita;
 	private Comando comandoVai;
-	private Stanza stanzaIniziale;
-	private Stanza stanza2;
+	private Labirinto labirinto;
 	
 	
 	@BeforeEach
 	void setUp() {
 		io = new IOConsole();
-		partita = new Partita();
 		comandoVai = new ComandoVai(io);
-		stanzaIniziale = new Stanza("Stanza Iniziale");
-		stanza2 = new Stanza("Stanza 2");
-		partita.setStanzaCorrente(stanzaIniziale);
-		partita.getStanzaCorrente().impostaStanzaAdiacente("nord", stanza2);
-		partita.getStanzaCorrente().impostaStanzaAdiacente("est", null);
-		partita.getStanzaCorrente().impostaStanzaAdiacente("sud", null);
-		partita.getStanzaCorrente().impostaStanzaAdiacente("ovest", null);
+		labirinto = new LabirintoBuilder()
+				.addStanzaIniziale("Atrio")
+				.addStanzaVincente("Campus")
+				.addStanza("N10")
+				.addAdiacenza("Atrio", "N10", "est")
+				.addAdiacenza("N10", "Atrio", "ovest")
+				.addAdiacenza("N10", "Campus", "sud")
+				.addAdiacenza("Campus", "N10", "nord")
+				.getLabirinto();
+		partita = new Partita(labirinto);
 	}
 
 	@Test
-	void testEseguiVaiStanzaInStanzaPresente() {
-		comandoVai.setParametro("nord");
-		comandoVai.esegui(partita);
-		assertEquals(stanza2, partita.getStanzaCorrente());
-	}
-	@Test
-	void testEseguiVaiStanzaInStanzaAssente() {
+	void testEseguiVaiInStanzaPresente() {
 		comandoVai.setParametro("est");
 		comandoVai.esegui(partita);
-		assertEquals(stanzaIniziale, partita.getStanzaCorrente());
+		assertEquals(new Stanza("N10"), partita.getStanzaCorrente());
+	}
+	@Test
+	void testEseguiVaiInStanzaAssente() {
+		comandoVai.setParametro("sud");
+		comandoVai.esegui(partita);
+		assertEquals(new Stanza("Atrio"), partita.getStanzaCorrente());
+	}
+	@Test
+	void testEseguiVaiDueVoltePresente() {
+		comandoVai.setParametro("est");
+		comandoVai.esegui(partita);
+		assertEquals(new Stanza("N10"), partita.getStanzaCorrente());
+		comandoVai.setParametro("sud");
+		comandoVai.esegui(partita);
+		assertEquals(new Stanza("Campus"), partita.getStanzaCorrente());
+	}
+	@Test
+	void testEseguiVaiInPresenteAssente() {
+		comandoVai.setParametro("est");
+		comandoVai.esegui(partita);
+		assertEquals(new Stanza("N10"), partita.getStanzaCorrente());
+		comandoVai.setParametro("nord");
+		comandoVai.esegui(partita);
+		assertEquals(new Stanza("N10"), partita.getStanzaCorrente());
 	}
 }

@@ -7,44 +7,50 @@ import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
+
 class StanzaBloccataTest {
-	private Stanza stanzaBloccata;
+	private StanzaBloccata stanzaBloccata;
 	private Stanza stanzaAdiacenteNord;
 	private Stanza stanzaAdiacenteOvest;
-	private Attrezzo passepartout;
+	private Attrezzo sblocco;
+	private Attrezzo osso;
 
+	
 	@BeforeEach
 	void setUp() {
-		stanzaBloccata = new StanzaBloccata("Stanza Bloccata", "passepartout", "nord");
+		stanzaBloccata = new StanzaBloccata("Stanza Bloccata", "chiave", "nord");
 		stanzaAdiacenteNord = new Stanza("Stanza Adiacente Nord");
 		stanzaAdiacenteOvest = new Stanza("Stanza Adiacente Ovest");
 		stanzaBloccata.impostaStanzaAdiacente("nord", stanzaAdiacenteNord);
 		stanzaBloccata.impostaStanzaAdiacente("ovest", stanzaAdiacenteOvest);
-		passepartout = new Attrezzo("passepartout", 1);
+		sblocco = new Attrezzo("chiave", 1);
+		osso = new Attrezzo("osso", 2);
 	}
-
+	
+	
 	@Test
-	void testGetStanzaAdiacenteStanzaBloccataSenzaPassepartout() {
+	void testGetStanzaAdiacenteStanzaBloccataSenzaAttrezzi() {
 		assertEquals(stanzaBloccata, stanzaBloccata.getStanzaAdiacente("nord"));
 	}
 	@Test
-	void testGetStanzaAdiacenteStanzaNonBloccataSenzaPassepartout() {
+	void testGetStanzaAdiacenteStanzaBloccataSenzaSblocco() {
+		stanzaBloccata.addAttrezzo(osso);
+		assertEquals(stanzaBloccata, stanzaBloccata.getStanzaAdiacente("nord"));
+	}
+	@Test
+	void testGetStanzaAdiacenteStanzaNonBloccataSenzaSblocco() {
 		assertEquals(stanzaAdiacenteOvest, stanzaBloccata.getStanzaAdiacente("ovest"));
 	}
 	@Test
-	void testGetStanzaAdiacenteStanzaBloccataConPassepartout() {
-		stanzaBloccata.addAttrezzo(passepartout);
+	void testGetStanzaAdiacenteStanzaBloccataConSblocco() {
+		stanzaBloccata.addAttrezzo(sblocco);
 		assertEquals(stanzaAdiacenteNord, stanzaBloccata.getStanzaAdiacente("nord"));
 	}
-	@Test
-	void testGetStanzaAdiacenteStanzaNonBloccataConPassepartout() {
-		stanzaBloccata.addAttrezzo(passepartout);
-		assertEquals(stanzaAdiacenteOvest, stanzaBloccata.getStanzaAdiacente("ovest"));
-	}
+	
 
 	@Test
 	void testGetDescrizione() {
-		assertEquals(stanzaBloccata.toString()+"\nDirezione bloccata: nord\nAttrezzo di sblocco: passepartout", stanzaBloccata.getDescrizione());
+		assertEquals(stanzaBloccata.toString()+"\nDirezione bloccata: nord\nAttrezzo di sblocco: chiave", stanzaBloccata.getDescrizione());
 	}
 
 }

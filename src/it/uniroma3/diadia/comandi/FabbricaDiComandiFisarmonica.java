@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 import it.uniroma3.diadia.IO;
 
+
 public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi{
 	private String nomeComando = null;
 	private String parametro = null;
+	
 	
 	@Override
 	public Comando costruisciComando(String istruzione, IO io) {
@@ -40,6 +42,7 @@ public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi{
 	public String getNome() {
 		return this.nomeComando;
 	}
+	
 	@Override
 	public String getParametro() {
 		return this.parametro;

@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaBuiaTest {
-	Stanza stanzaBuia;
-	Attrezzo lanterna;
-	Attrezzo spada;
 
+class StanzaBuiaTest {
+	private StanzaBuia stanzaBuia;
+	private Attrezzo lanterna;
+	private Attrezzo spada;
+
+	
 	@BeforeEach
 	void setUp() {
 		stanzaBuia = new StanzaBuia("Stanza Buia", "lanterna");
@@ -19,24 +21,19 @@ class StanzaBuiaTest {
 		spada = new Attrezzo("spada", 3);
 	}
 
+	
 	@Test
 	void testGetDescrizioneBuio() {
 		stanzaBuia.addAttrezzo(spada);
 		assertEquals("Qui c'è buio pesto", stanzaBuia.getDescrizione());
 	}
 	@Test
-	void testGetDescrizioneLuce() {
+	void testGetDescrizioneLuceConUnAttrezzo() {
 		stanzaBuia.addAttrezzo(lanterna);
 		assertEquals(stanzaBuia.toString(), stanzaBuia.getDescrizione());
 	}
 	@Test
-	void testGetDescrizioneLuceLanternaInPrimaPosizione() {
-		stanzaBuia.addAttrezzo(lanterna);
-		stanzaBuia.addAttrezzo(spada);
-		assertEquals(stanzaBuia.toString(), stanzaBuia.getDescrizione());
-	}
-	@Test
-	void testGetDescrizioneLuceLanternaInSecondaPosizione() {
+	void testGetDescrizioneLuceConDueAttrezzi() {
 		stanzaBuia.addAttrezzo(spada);
 		stanzaBuia.addAttrezzo(lanterna);
 		assertEquals(stanzaBuia.toString(), stanzaBuia.getDescrizione());

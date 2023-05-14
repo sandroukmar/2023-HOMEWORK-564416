@@ -6,14 +6,17 @@ import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Borsa;
 
+
 public class ComandoPrendi implements Comando{
 	private IO io;
 	private String nomeAttrezzo;
+	
 	
 	public ComandoPrendi(IO io) {
 		this.io = io;
 	}
 
+	
 	@Override
 	public void esegui(Partita partita) {
 		Stanza stanzaCorrente = partita.getStanzaCorrente();
