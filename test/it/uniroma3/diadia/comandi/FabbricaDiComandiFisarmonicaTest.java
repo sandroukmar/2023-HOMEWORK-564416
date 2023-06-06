@@ -2,6 +2,8 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Scanner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +17,7 @@ class FabbricaDiComandiFisarmonicaTest {
 	@BeforeEach
 	void setUp(){
 		factory = new FabbricaDiComandiFisarmonica();
-		io = new IOConsole();
+		io = new IOConsole(new Scanner(System.in));
 	}
 
 	@Test

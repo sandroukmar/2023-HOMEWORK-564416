@@ -2,6 +2,8 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Scanner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +20,10 @@ class ComandoPosaTest {
 
 	@BeforeEach
 	void setUp() {
-		io = new IOConsole();
+		io = new IOConsole(new Scanner(System.in));
 		partita = new Partita();
-		comandoPosa = new ComandoPosa(io);
+		comandoPosa = new ComandoPosa();
+		comandoPosa.setIO(io);
 		scudo = new Attrezzo("scudo", 2);
 		partita.getGiocatore().getBorsa().addAttrezzo(scudo);
 	}

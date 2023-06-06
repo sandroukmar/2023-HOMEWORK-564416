@@ -2,13 +2,13 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
-import it.uniroma3.diadia.IOSimulator;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +22,10 @@ class ComandoVaiTest {
 	
 	@BeforeEach
 	void setUp() {
-		io = new IOConsole();
-		comandoVai = new ComandoVai(io);
-		labirinto = new LabirintoBuilder()
+		io = new IOConsole(new Scanner(System.in));
+		comandoVai = new ComandoVai();
+		comandoVai.setIO(io);
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Atrio")
 				.addStanzaVincente("Campus")
 				.addStanza("N10")

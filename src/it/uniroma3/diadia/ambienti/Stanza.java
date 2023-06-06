@@ -4,37 +4,45 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
 
 
 public class Stanza {
 	private String nome;
 	private Map<String, Attrezzo> attrezzi;
-	private Map<String, Stanza> stanzeAdiacenti;
+	private Map<Direzione, Stanza> direzioni2stanze;
+	private AbstractPersonaggio personaggio;
 
-	
+
 	public Stanza(String nome) {
 		this.nome = nome;
-		this.stanzeAdiacenti = new HashMap<String, Stanza>();
+		this.direzioni2stanze = new HashMap<Direzione, Stanza>();
 		this.attrezzi = new HashMap<String, Attrezzo>();
+		this.personaggio = null;
 	}
-	
+
 
 	public String getNome() {
 		return this.nome;
 	}
-	
-	public Map<String, Stanza> getStanzeAdiacenti() {
-		return this.stanzeAdiacenti;
+
+	public Map<Direzione, Stanza> getDirezioni2stanze() {
+		return this.direzioni2stanze;
 	}
-	
+
 	public Map<String, Attrezzo> getAttrezzi() {
 		return this.attrezzi;
 	}
-	
+
 	public Stanza getStanzaAdiacente(String direzione) {
-		return this.stanzeAdiacenti.get(direzione);
+		try {
+			return this.direzioni2stanze.get(Direzione.valueOf(direzione));
+		}
+		catch(IllegalArgumentException e) {
+			return null;
+		}
 	}
-	
+
 	public Attrezzo getAttrezzo(String nomeAttrezzo) {
 		return this.attrezzi.get(nomeAttrezzo);
 	}
@@ -42,13 +50,24 @@ public class Stanza {
 	public String getDescrizione() {
 		return this.toString();
 	}
-	
+
+	public AbstractPersonaggio getPersonaggio() {
+		return personaggio;
+	}
+
+	public void setPersonaggio(AbstractPersonaggio personaggio) {
+		this.personaggio = personaggio;
+	}
+
 	public void impostaStanzaAdiacente(String direzione, Stanza stanza) {
-		if(direzione == "nord" || direzione == "est" || direzione == "sud" || direzione == "ovest") {
-			this.stanzeAdiacenti.put(direzione, stanza);
+		try {
+			this.direzioni2stanze.put(Direzione.valueOf(direzione), stanza);
+		}
+		catch(IllegalArgumentException e) {
+			return;
 		}
 	}
-	
+
 	public boolean hasAttrezzo(String nomeAttrezzo) {
 		return this.attrezzi.containsKey(nomeAttrezzo);
 	}
@@ -68,14 +87,44 @@ public class Stanza {
 		return true;
 	}
 
-	public Set<String> getDirezioni() {
-		return this.stanzeAdiacenti.keySet();
+	public Set<Direzione> getDirezioni() {
+		return this.direzioni2stanze.keySet();
 	}
-	
+
 	public Boolean isMagica() {
 		return false;
 	}
-	
+
+	public int numeroAttrezzi() {
+		return this.getAttrezzi().size();
+	}
+
+	public Stanza stanzaAdiacenteConMenoAttrezzi() {
+		int numeroAttrezziMin = 0;
+		Stanza ris = null;
+		for(Direzione direzione : this.getDirezioni()) {
+			Stanza stanzaAdiacente = this.getStanzaAdiacente(direzione.name());
+			if(this.numeroAttrezzi() < numeroAttrezziMin) {
+				numeroAttrezziMin = this.numeroAttrezzi();
+				ris = stanzaAdiacente;
+			}
+		}
+		return ris;
+	}
+
+	public Stanza stanzaAdiacenteConPiuAttrezzi() {
+		int numeroAttrezziMax = 0;
+		Stanza ris = null;
+		for(Direzione direzione : this.getDirezioni()) {
+			Stanza stanzaAdiacente = this.getStanzaAdiacente(direzione.name());
+			if(this.numeroAttrezzi() > numeroAttrezziMax) {
+				numeroAttrezziMax = this.numeroAttrezzi();
+				ris = stanzaAdiacente;
+			}
+		}
+		return ris;
+	}
+
 	@Override
 	public int hashCode() {
 		int a = 0;
@@ -83,7 +132,7 @@ public class Stanza {
 		for(Attrezzo attrezzo : this.attrezzi.values()) {
 			a += attrezzo.hashCode();
 		}
-		for(Stanza stanza : this.stanzeAdiacenti.values()) {
+		for(Stanza stanza : this.direzioni2stanze.values()) {
 			s += stanza.hashCode();
 		}
 		return this.nome.hashCode()+a+s;
@@ -98,8 +147,8 @@ public class Stanza {
 				return false;
 			}
 		}
-		for(Stanza stanza : this.stanzeAdiacenti.values()) {
-			if(!that.getStanzeAdiacenti().values().contains(stanza)) {
+		for(Stanza stanza : this.direzioni2stanze.values()) {
+			if(!that.getDirezioni2stanze().values().contains(stanza)) {
 				return false;
 			}
 		}
@@ -112,13 +161,16 @@ public class Stanza {
 		StringBuilder risultato = new StringBuilder();
 		risultato.append(this.nome);
 		risultato.append("\nUscite: ");
-		for (String direzione : this.getDirezioni()) {
+		for (Direzione direzione : this.getDirezioni()) {
 			risultato.append(" " + direzione);
 		}
 		risultato.append("\nAttrezzi nella stanza: ");
 		for (Attrezzo attrezzo : this.attrezzi.values()) {
-			risultato.append(attrezzo.toString()+" ");
+			risultato.append(attrezzo.toString() + " ");
 		}
+		risultato.append("\nPersonaggio: ");
+		if(this.getPersonaggio() != null)
+			risultato.append(this.getPersonaggio());
 		return risultato.toString();
 	}
 }

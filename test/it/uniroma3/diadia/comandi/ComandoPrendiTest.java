@@ -2,6 +2,8 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Scanner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,9 +22,10 @@ class ComandoPrendiTest {
 
 	@BeforeEach
 	void setUp() {
-		io = new IOConsole();
+		io = new IOConsole(new Scanner(System.in));
 		partita = new Partita();
-		comandoPrendi = new ComandoPrendi(io);
+		comandoPrendi = new ComandoPrendi();
+		comandoPrendi.setIO(io);
 		spada = new Attrezzo("spada", 3);
 		stanza = new Stanza("stanza");
 		stanza.addAttrezzo(spada);

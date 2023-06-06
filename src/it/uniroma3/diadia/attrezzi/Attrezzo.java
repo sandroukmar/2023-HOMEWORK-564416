@@ -20,6 +20,10 @@ public class Attrezzo {
 		return this.peso;
 	}
 	
+	public void setPeso(int peso) {
+		this.peso = peso;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		Attrezzo other = (Attrezzo) obj;

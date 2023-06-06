@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 class IOSimulatorTest {
@@ -50,7 +49,7 @@ class IOSimulatorTest {
 	
 	@Test
 	void testInteraPartitaMonolocale() {
-		labirinto = new LabirintoBuilder()
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Campus")
 				.addStanzaVincente("Campus")
 				.getLabirinto();
@@ -62,7 +61,7 @@ class IOSimulatorTest {
 	}
 	@Test
 	void testInteraPartitaBilocaleVinta() {
-		labirinto = new LabirintoBuilder()
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Atrio")
 				.addStanzaVincente("Campus")
 				.addAdiacenza("Atrio", "Campus", "est")
@@ -76,7 +75,7 @@ class IOSimulatorTest {
 	}
 	@Test
 	void testInteraPartitaBilocaleFine() {
-		labirinto = new LabirintoBuilder()
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Atrio")
 				.addStanzaVincente("Campus")
 				.addAdiacenza("Atrio", "Campus", "est")
@@ -90,7 +89,7 @@ class IOSimulatorTest {
 	}
 	@Test
 	void testInteraPartitaBilocaleGuardaVinta() {
-		labirinto = new LabirintoBuilder()
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Atrio")
 				.addStanzaVincente("Campus")
 				.addAdiacenza("Atrio", "Campus", "est")
@@ -104,7 +103,7 @@ class IOSimulatorTest {
 	}
 	@Test
 	void testInteraPartitaTrilocale() {
-		labirinto = new LabirintoBuilder()
+		labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("Atrio")
 				.addStanzaVincente("Campus")
 				.addStanza("N10")

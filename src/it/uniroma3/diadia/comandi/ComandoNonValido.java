@@ -1,27 +1,16 @@
 package it.uniroma3.diadia.comandi;
 
-import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 
 
-public class ComandoNonValido implements Comando {
-	private IO io;
-	
-	
-	public ComandoNonValido(IO io) {
-		this.io = io;
-	}
+public class ComandoNonValido extends AbstractComando {
 
-	
 	@Override
 	public void esegui(Partita partita) {
-		io.mostraMessaggio("Comando sconosciuto");
-		io.mostraMessaggio("Comandi disponibili:");
-		Comando comandoAiuto = new ComandoAiuto(io);
+		this.getIO().mostraMessaggio("Comando sconosciuto");
+		this.getIO().mostraMessaggio("Comandi disponibili:");
+		Comando comandoAiuto = new ComandoAiuto();
+		comandoAiuto.setIO(this.getIO());
 		comandoAiuto.esegui(partita);
-	}
-
-	@Override
-	public void setParametro(String parametro) {
 	}
 }
